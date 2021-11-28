@@ -60,6 +60,7 @@ class ModificarUsuarioApp extends State<ModificarUsuario> {
         int flag=0;
         for(var cursor in usuario.docs){
           if(cursor.get("Correo")==correo.text){
+            if(cursor.get("Contraseña")==pass.text){
               print("Usuario encontrado");
               flag=1;
               print(cursor.id);
@@ -68,35 +69,28 @@ class ModificarUsuarioApp extends State<ModificarUsuario> {
                     .collection("Usuarios")
                     .doc(cursor.id);
 
-                        nombre.text=cursor.get("Nombre");
-                        telefono.text=cursor.get("Telefono");
-                        pass.text=cursor.get("Contraseña");
-                        UserId=cursor.id;
+                nombre.text=cursor.get("Nombre");
+                telefono.text=cursor.get("Telefono");
+                //pass.text=cursor.get("Contraseña");
+                UserId=cursor.id;
 
-
-                    /*.set({
-                  "Nombre":cursor.get("Nombre"),
-                  "Correo":cursor.get("Correo"),
-                  "Telefono":cursor.get("Telefono"),
-                  "Estado":false,
-                  "Contraseña":cursor.get("Contraseña"),
-                });*/
-                //mensaje("Correcto", "Se ha dado de baja al usuario");
               }
               catch(e){
                 print(e);
                 mensaje("Error", "No se logra encontrar el Usuario"+e.toString());
               }
+            }
+
 
               /*Navigator.push(context,
                     MaterialPageRoute(builder: (_) => Home()));*/
             }
         }
-        if(flag==0){
-          print("Correo NO encontrado");
+        if (flag==0){
+          mensaje("Login","Usuario NO encontrado");
         }
       }else{
-        print("Coleccion vacia");
+        print("Collección vacía");
       }
     }catch(e){
 
@@ -191,6 +185,19 @@ class ModificarUsuarioApp extends State<ModificarUsuario> {
               ),
             ),
             Padding(
+              padding: EdgeInsets.only(left: 25, top: 25, right: 25, bottom: 2),
+              child: TextField(
+                controller: pass,
+                obscureText: true,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15)
+                    ),
+                    labelText: 'Contraseña',
+                    hintText: 'Digite Contraseña'),
+              ),
+            ),
+            Padding(
                 padding: EdgeInsets.only(),
                 child: ElevatedButton(
                   onPressed: () {
@@ -228,19 +235,6 @@ class ModificarUsuarioApp extends State<ModificarUsuario> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 25, top: 25, right: 25, bottom: 2),
-              child: TextField(
-                controller: pass,
-                obscureText: true,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15)
-                    ),
-                    labelText: 'Contraseña',
-                    hintText: 'Digite Contraseña'),
-              ),
-            ),
-            Padding(
                 padding: EdgeInsets.only(bottom: 200),
                 child: ElevatedButton(
                   onPressed: () {
@@ -261,20 +255,26 @@ class ModificarUsuarioApp extends State<ModificarUsuario> {
           ])),
     );
   }
-  void mensaje(String titulo,String mess){
-    showDialog(context: context, builder: (builcontex){
-      return AlertDialog(
-        title: Text(titulo),
-        content: Text(mess),
-        actions: [
-          RaisedButton(onPressed: (){
-            Navigator.of(context).pop();
-          },
-            child: Text("Aceptar",
-              style: TextStyle(color:Colors.teal),),
-          ),
-        ],
-      );
-    });
+
+  void mensaje(String titulo,String mess ){
+    showDialog(
+        context:context,
+        builder: (builcontext){
+          return AlertDialog(
+            title: Text(titulo),
+            content: Text(mess),
+            actions: [
+              RaisedButton(
+                onPressed: (){
+                  Navigator.of(context).pop();
+                },
+                child:Text("Aceptar",
+                    style:TextStyle(color:Colors.blueGrey)),
+              ),
+            ],
+          ) ;
+        }
+    );
   }
+
 }

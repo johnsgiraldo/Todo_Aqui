@@ -30,6 +30,7 @@ class LoginApp extends State<Login>{
             //print("Correo encontrado");
             if(cursor.get("Contraseña")==pass.text){
               print("Usuario encontrado");
+              flag=1;
               Navigator.push(context,
                   MaterialPageRoute(builder: (_) => Home()));
             }
@@ -37,6 +38,7 @@ class LoginApp extends State<Login>{
         }
         if(flag==0){
           print("Correo NO encontrado");
+          mensaje("Login","Usuario NO encontrado");
         }
       }else{
         print("Coleccion vacia");
@@ -188,5 +190,22 @@ class LoginApp extends State<Login>{
         ),
       ),
     );
+  }
+
+  void mensaje(String titulo,String mess){
+    showDialog(context: context, builder: (builcontex){
+      return AlertDialog(
+        title: Text(titulo),
+        content: Text(mess),
+        actions: [
+          RaisedButton(onPressed: (){
+            Navigator.of(context).pop();
+          },
+            child: Text("Aceptar",
+              style: TextStyle(color:Colors.teal),),
+          ),
+        ],
+      );
+    });
   }
 }
