@@ -25,7 +25,7 @@ class LoadPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'TodoAqui',
+      title: 'Todo Aqui',
       home: Scaffold(
         backgroundColor: Colors.orange[50],
         body: Center(
