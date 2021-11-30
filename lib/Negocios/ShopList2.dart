@@ -9,6 +9,7 @@ import 'package:todo_aqui/Busqueda.dart';
 import 'package:todo_aqui/main.dart';
 import 'package:todo_aqui/Negocios/RegistroNegocio.dart';
 import 'package:todo_aqui/Negocios/negocio.dart';
+import 'ShopOne.dart';
 
 class Shop2 extends StatelessWidget {
   @override
@@ -23,162 +24,11 @@ class ShopList2 extends StatefulWidget {
 }
 
 class ShopList2App extends State<ShopList2> {
+  String idDoc="";
   @override
   String texto1="Cigarreria Tio Tom";
   String texto2="Bruder";
   Widget build(BuildContext context) {
-    Widget titleSection = Container(
-      padding: const EdgeInsets.all(15),
-      child: Row(
-        children: [
-          Expanded(
-            /*1*/
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                /*2*/
-                Container(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Text(
-                    texto1,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Text(
-                  'Compras en tienda',
-                  style: TextStyle(
-                    color: Colors.grey[500],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          /*3*/
-          Container(
-            width: 70,
-            height: 70,
-            child: Image.asset('image/Tiotom2.jpg'),
-            padding: const EdgeInsets.only(right: 8),
-          ),
-          ElevatedButton(onPressed: (){}, child: Text("Info"), style: ElevatedButton.styleFrom(
-            primary: Colors.teal,
-          ),)
-        ],
-      ),
-    );
-
-    Widget titleSection2 = Container(
-      padding: const EdgeInsets.only(top:15,left: 15, right: 15,bottom: 450),
-      child: Row(
-        children: [
-          Expanded(
-            /*1*/
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                /*2*/
-                Container(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Text(
-                    texto2,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Text(
-                  'Consumo en el lugar',
-                  style: TextStyle(
-                    color: Colors.grey[500],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          /*3*/
-          Container(
-            width: 70,
-            height: 70,
-            child: Image.asset('image/Bruder.png'),
-            padding: const EdgeInsets.only(right: 8),
-          ),
-          ElevatedButton(onPressed: (){
-            Navigator.push(context,
-                MaterialPageRoute(builder: (_) => Shopdetail()));
-          }, child: Text("Info"), style: ElevatedButton.styleFrom(
-            primary: Colors.teal,
-          ),)
-        ],
-      ),
-    );
-
-    //*********Seccion de Botones *************
-    Widget botonSection = Container(
-      color: Colors.teal[50],
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Padding(
-              padding: EdgeInsets.only(),
-              child: IconButton(
-                icon: const Icon(Icons.home),
-                color: Colors.teal,
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => Home()));
-                  print('Presione el boton');
-                },
-              )),
-          Padding(
-              padding: EdgeInsets.only(),
-              child: IconButton(
-                icon: const Icon(Icons.find_in_page),
-                color: Colors.teal,
-                onPressed: () {
-                  print('Presione el boton');
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => busqueda()));
-                },
-              )),
-          Padding(
-              padding: EdgeInsets.only(),
-              child: IconButton(
-                icon: const Icon(Icons.store),
-                color: Colors.teal,
-                onPressed: () {
-                  print('Presione el boton');
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => ShopList()));
-                },
-              )),
-          Padding(
-              padding: EdgeInsets.only(),
-              child: IconButton(
-                icon: const Icon(Icons.add_business_rounded),
-                color: Colors.teal,
-                onPressed: () {
-                  print('Presione el boton');
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => Registro()));
-                },
-              )),
-          Padding(
-              padding: EdgeInsets.only(),
-              child: IconButton(
-                icon: const Icon(Icons.supervised_user_circle),
-                color: Colors.teal,
-                onPressed: () {
-                  print('Presione el boton');
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => GestionUsuario()));
-                },
-              )),
-        ],
-      ),
-    );
-
 
     return Scaffold(
       backgroundColor: Colors.orange[50],
@@ -218,7 +68,8 @@ class ShopList2App extends State<ShopList2> {
                                 ),
                               ),
                               Text(
-                                'Compras en tienda',
+                                //'Compras en tienda',
+                                snapshot.data!.docs[index].get("Tipo"),
                                 style: TextStyle(
                                   color: Colors.grey[500],
                                 ),
@@ -233,7 +84,10 @@ class ShopList2App extends State<ShopList2> {
                           child: Image.asset('image/Tiotom2.jpg'),
                           padding: const EdgeInsets.only(right: 8),
                         ),
-                        ElevatedButton(onPressed: (){}, child: Text("Info"), style: ElevatedButton.styleFrom(
+                        ElevatedButton(onPressed: (){
+                          this.idDoc=snapshot.data!.docs[index].id;
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => ShopOne(this.idDoc)));
+                        }, child: Text("Info"), style: ElevatedButton.styleFrom(
                           primary: Colors.teal,
                         ),)
                       ],

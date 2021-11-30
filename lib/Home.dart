@@ -8,6 +8,7 @@ import 'package:todo_aqui/Negocios/ShopList2.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:todo_aqui/Busqueda/slideProductos.dart';
 import 'package:todo_aqui/Busqueda/slideServicios.dart';
+import 'package:todo_aqui/Busqueda/Buscar.dart';
 // Uncomment lines 7 and 10 to view the visual layout at runtime.
 // import 'package:flutter/rendering.dart' show debugPaintSizeEnabled;
 
@@ -27,6 +28,7 @@ class Index extends StatefulWidget {
 
 
 class IndexStart extends State<Index> {
+  TextEditingController buscar=TextEditingController();
   @override
   Widget build(BuildContext context) {
 
@@ -36,6 +38,7 @@ class IndexStart extends State<Index> {
       Padding(
         padding: EdgeInsets.only(left: 25, top: 25, right: 25, bottom: 2),
         child: TextField(
+          controller: buscar,
           decoration: InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Busqueda',
@@ -48,7 +51,7 @@ class IndexStart extends State<Index> {
             onPressed: () {
               print('Presione el boton');
               Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => busqueda()));
+                  MaterialPageRoute(builder: (_) => Search(buscar.text)));
             },
             child: Text('Buscar'),
             style: ElevatedButton.styleFrom(

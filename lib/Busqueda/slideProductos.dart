@@ -24,29 +24,33 @@ class _slideProductos extends State<slideProductos>{
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      body: StreamBuilder(
-          stream: slides,
-          builder: (context, AsyncSnapshot snap){
-            // otain current state
-            List slideList = snap.data.toList();
-            if (snap.hasError){
-              return Text("Error");
-            }
-            if (snap.connectionState == ConnectionState.waiting){
-              return CircularProgressIndicator();
-            }
-            return PageView.builder(
-                controller: controlslide,
-                itemCount: slideList.length,
-                itemBuilder: (context, int index){
+        backgroundColor: Colors.orange[50],
+        appBar: new AppBar(
+          title: new Text("Return"),
+          backgroundColor: Colors.teal[100],
+        ),
+        body: StreamBuilder(
+            stream: slides,
+            builder: (context, AsyncSnapshot snap){
+              // otain current state
+              List slideList = snap.data.toList();
+              if (snap.hasError){
+                return Text("Error");
+              }
+              if (snap.connectionState == ConnectionState.waiting){
+                return CircularProgressIndicator();
+              }
+              return PageView.builder(
+                  controller: controlslide,
+                  itemCount: slideList.length,
+                  itemBuilder: (context, int index){
                     return _storyPage(slideList[index]);
-            });
-          }));
-    }
+                  });
+            }));
+  }
   _storyPage(Map data){
     return Container(
         margin: EdgeInsets.only(top:100,bottom:50,left:10,right:10),
-
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           image: DecorationImage(
@@ -54,13 +58,13 @@ class _slideProductos extends State<slideProductos>{
             image: NetworkImage(data['imagen']),
           ),
         ),
-      child: Center(
-        child: Text(
-          data['Nombre'],
-          style: TextStyle(fontSize: 40, color: Colors.orange[50]),
+        child: Center(
+            child: Text(
+              data['Nombre'],
+              style: TextStyle(fontSize: 40, color: Colors.orange[50]),
+            )
         )
-      )
     );
   }
-  
+
 }

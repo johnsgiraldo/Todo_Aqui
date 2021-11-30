@@ -24,6 +24,11 @@ class _slideServicios extends State<slideServicios>{
   @override
   Widget build(BuildContext context){
     return Scaffold(
+        backgroundColor: Colors.orange[50],
+        appBar: new AppBar(
+          title: new Text("return"),
+          backgroundColor: Colors.teal[100],
+        ),
         body: StreamBuilder(
             stream: slides,
             builder: (context, AsyncSnapshot snap){

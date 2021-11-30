@@ -95,7 +95,7 @@ class _busqueda extends State<busqueda> {
   }
   Widget NegocioCard(BuildContext context,DocumentSnapshot document){
     final neg= Negocio.fromSnapshot(document);
-        return Container(
+    return Container(
 
       child: Card(
         child: InkWell(
@@ -104,11 +104,11 @@ class _busqueda extends State<busqueda> {
             child: Column(
               children: <Widget>[
                 Padding(
-                padding: const EdgeInsets.only(top:8.0),
-                child: Row(children: <Widget>[
-                  Text(neg.Nombre),
-                  Spacer(),
-                ]),
+                  padding: const EdgeInsets.only(top:8.0),
+                  child: Row(children: <Widget>[
+                    Text(neg.Nombre),
+                    Spacer(),
+                  ]),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top:8.0),
@@ -124,7 +124,7 @@ class _busqueda extends State<busqueda> {
                     const Spacer(),
                   ]),
                 ),
-             ],
+              ],
             ),
           ),
         ),
