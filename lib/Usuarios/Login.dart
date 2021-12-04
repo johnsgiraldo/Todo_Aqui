@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:todo_aqui/Home.dart';
+import 'package:todo_aqui/Usuarios/Token.dart';
 import 'RegistroUsuario.dart';
 import 'package:todo_aqui/Usuarios/GestionUsuario.dart';
 import 'package:todo_aqui/Negocios/ShopList.dart';
@@ -31,6 +32,8 @@ class LoginApp extends State<Login>{
             if(cursor.get("Contraseña")==pass.text){
               print("Usuario encontrado");
               flag=1;
+              Token tk=new Token();
+              tk.guardarToken(cursor.id);
               Navigator.push(context,
                   MaterialPageRoute(builder: (_) => Home()));
             }

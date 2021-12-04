@@ -9,6 +9,7 @@ import 'package:todo_aqui/Busqueda.dart';
 import 'package:todo_aqui/main.dart';
 import 'package:todo_aqui/Negocios/RegistroNegocio.dart';
 import 'package:todo_aqui/Negocios/negocio.dart';
+import 'ObjetoTienda.dart';
 import 'ShopOne.dart';
 
 class Shop2 extends StatelessWidget {
@@ -28,7 +29,38 @@ class ShopList2App extends State<ShopList2> {
   @override
   String texto1="Cigarreria Tio Tom";
   String texto2="Bruder";
+  ObjetoTienda objTienda=new ObjetoTienda();
+
+  buscarDoc(String docId) async {
+    try {
+      CollectionReference ref =
+      FirebaseFirestore.instance.collection("Negocios");
+      QuerySnapshot tienda = await ref.get();
+
+      if (tienda.docs.length != 0) {
+        for (var cursor in tienda.docs) {
+          if (cursor.id == docId) {
+            objTienda.nombre=cursor.get("Nombre");
+            objTienda.des_corta=cursor.get("Tipo");
+            objTienda.des_larga=cursor.get("Servicio");
+            objTienda.telefono=cursor.get("Telefono");
+            objTienda.website=cursor.get("Web");
+            objTienda.imagen="Bruder.png";
+            objTienda.idTienda=cursor.id;
+            //this.logo = cursor.get("rutaFoto");
+            //this.titulo = cursor.get("Nombre");
+
+            //print(widget.docId + " id importado");
+          }
+        }
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Widget build(BuildContext context) {
+
 
     return Scaffold(
       backgroundColor: Colors.orange[50],
@@ -86,7 +118,8 @@ class ShopList2App extends State<ShopList2> {
                         ),
                         ElevatedButton(onPressed: (){
                           this.idDoc=snapshot.data!.docs[index].id;
-                          Navigator.push(context, MaterialPageRoute(builder: (_) => ShopOne(this.idDoc)));
+                          buscarDoc(this.idDoc);
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => ShopOne(objTienda)));
                         }, child: Text("Info"), style: ElevatedButton.styleFrom(
                           primary: Colors.teal,
                         ),)

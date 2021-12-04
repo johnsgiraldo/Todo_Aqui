@@ -87,7 +87,7 @@ class SearchApp extends State<Search>{
                               ElevatedButton(
                                   onPressed: () {
                                     this.idDoc=snapshot.data!.docs[index].id;
-                                    Navigator.push(context, MaterialPageRoute(builder: (_) => ShopOne(this.idDoc)));
+                                    //Navigator.push(context, MaterialPageRoute(builder: (_) => ShopOne(this.idDoc)));
 
                                   }, child: Text("Entrar"), style: ElevatedButton.styleFrom(
                                 primary: Colors.teal,
