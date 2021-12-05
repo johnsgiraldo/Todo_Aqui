@@ -62,7 +62,6 @@ class ShopList2App extends State<ShopList2> {
 
   Widget build(BuildContext context) {
 
-
     return Scaffold(
       backgroundColor: Colors.orange[50],
       appBar: AppBar(
