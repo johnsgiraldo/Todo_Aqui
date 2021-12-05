@@ -6,4 +6,5 @@ class ObjetoTienda{
   var website="";
   var idTienda="";
   var telefono="";
+  var prodserv="";
 }

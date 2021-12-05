@@ -47,6 +47,7 @@ class ShopList2App extends State<ShopList2> {
             objTienda.website=cursor.get("Web");
             objTienda.imagen="Bruder.png";
             objTienda.idTienda=cursor.id;
+            objTienda.prodserv=cursor.get("ProductoServicio");
             //this.logo = cursor.get("rutaFoto");
             //this.titulo = cursor.get("Nombre");
 
@@ -113,7 +114,11 @@ class ShopList2App extends State<ShopList2> {
                         Container(
                           width: 70,
                           height: 70,
-                          child: Image.asset('image/Tiotom2.jpg'),
+                          child: Image.asset(
+                            "image/" +
+                                snapshot.data!.docs[index]
+                                    .get("Imagen"),
+                          ),
                           padding: const EdgeInsets.only(right: 8),
                         ),
                         ElevatedButton(onPressed: (){

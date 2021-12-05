@@ -30,6 +30,7 @@ class RegistroNegocioApp extends State<RegistroNegocio> {
   TextEditingController Tipo = TextEditingController();
   TextEditingController Web = TextEditingController();
   TextEditingController ProductoServicio = TextEditingController();
+  TextEditingController Imagen = TextEditingController();
 
   registroTienda() async{
     try{
@@ -46,6 +47,7 @@ class RegistroNegocioApp extends State<RegistroNegocio> {
         "Tipo": Tipo.text,
         "Web":Web.text,
         "ProductoServicio":ProductoServicio.text,
+        "Imagen":Imagen.text,
       });
     }
     catch(e){
@@ -174,6 +176,18 @@ class RegistroNegocioApp extends State<RegistroNegocio> {
                 ),
               ),
               Padding(
+                padding: EdgeInsets.only(left: 25, top: 0.5, right: 25),
+                child: TextField(
+                  controller: Imagen,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)
+                      ),
+                      labelText: 'Logo del Negocio',
+                      hintText: 'Palabra clave de la busqueda'),
+                ),
+              ),
+              Padding(
                   padding: EdgeInsets.only(),
                   child: ElevatedButton(
                     onPressed: () {
@@ -188,6 +202,7 @@ class RegistroNegocioApp extends State<RegistroNegocio> {
                       Tipo.clear();
                       Web.clear();
                       ProductoServicio.clear();
+                      Imagen.clear();
                       print('Presione el boton');
                     },
                     child: Text('Crear Negocio'),
