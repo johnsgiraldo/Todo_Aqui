@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_aqui/Negocios/ObjetoTienda.dart';
 import 'package:todo_aqui/Usuarios/Login.dart';
 import 'package:todo_aqui/Usuarios/Token.dart';
+import '../Carrito.dart';
 import 'Productos.dart';
 import 'RegProductos.dart';
 
@@ -49,13 +50,16 @@ class ShopOneApp extends State<ShopOne> {
   }
 
   //agregarCarrito(NombreP, PrecioP) async {
-  agregarCarrito(String idTienda,String idUser, String idItem) async {
+  agregarCarrito(String idTienda,String idUser, String idItem, String nombre, String precio,String imagen) async {
 
     try {
       await firebase.collection("Carrito").doc().set({
         "UsuarioId":idUser,
         "TiendaId":idTienda,
         "ProductoId": idItem,
+        "NombreProd": nombre,
+        "PrecioProd": precio,
+        "ImagenProd": imagen,
         //"Precio": PrecioP,
         //"Nombre": NombreP,
       });
@@ -182,6 +186,19 @@ class ShopOneApp extends State<ShopOne> {
                       //child: const Icon(Icons.add_box),
                       child: Text("add"),
                       tooltip: "Agregar producto",
+                    ),
+                    FloatingActionButton(
+                      backgroundColor: Colors.teal,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) =>
+                                    Carrito()));
+                      },
+                      child: const Icon(Icons.shopping_cart),
+                      //child: Text("add"),
+                      //tooltip: "Agregar producto",
                     )
                   ],
                 ),
@@ -268,7 +285,10 @@ class ShopOneApp extends State<ShopOne> {
                                           String idUser=await tk.validarToken();
                                           print(idUser);
                                           if(idUser != ""){
-                                            agregarCarrito(widget.tiendaObj.idTienda, idUser,snapshot.data!.docs[index].id);
+                                            String NombreP=snapshot.data!.docs[index].get("Nombre");
+                                            String PrecioP=snapshot.data!.docs[index].get("Precio");
+                                            String ImagenP=snapshot.data!.docs[index].get("imagen");
+                                            agregarCarrito(widget.tiendaObj.idTienda, idUser,snapshot.data!.docs[index].id, NombreP, PrecioP, ImagenP);
                                           }else{
                                             Navigator.push(context,
                                                 MaterialPageRoute(builder: (_) => Login()));
