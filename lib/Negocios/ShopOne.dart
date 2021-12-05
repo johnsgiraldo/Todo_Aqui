@@ -231,6 +231,13 @@ class ShopOneApp extends State<ShopOne> {
                                                 color: Colors.grey[500],
                                               ),
                                             ),
+                                            Text(
+                                            '\u{1F4B2}'+snapshot.data!.docs[index]
+                                                  .get("Precio"),
+                                              style: TextStyle(
+                                                color: Colors.grey[500],
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),

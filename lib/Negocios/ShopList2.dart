@@ -45,7 +45,7 @@ class ShopList2App extends State<ShopList2> {
             objTienda.des_larga=cursor.get("Servicio");
             objTienda.telefono=cursor.get("Telefono");
             objTienda.website=cursor.get("Web");
-            objTienda.imagen="Bruder.png";
+            objTienda.imagen=cursor.get("Imagen");
             objTienda.idTienda=cursor.id;
             objTienda.prodserv=cursor.get("ProductoServicio");
             //this.logo = cursor.get("rutaFoto");

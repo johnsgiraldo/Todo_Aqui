@@ -92,7 +92,7 @@ class GestionUsuarioApp extends State<GestionUsuario>{
                   print('Presione el boton');
                 },
               )),
-          Padding(
+          /*Padding(
               padding: EdgeInsets.only(),
               child: IconButton(
                 icon: const Icon(Icons.find_in_page),
@@ -102,7 +102,7 @@ class GestionUsuarioApp extends State<GestionUsuario>{
                   Navigator.push(context,
                       MaterialPageRoute(builder: (_) => busqueda()));
                 },
-              )),
+              )),*/
           Padding(
               padding: EdgeInsets.only(),
               child: IconButton(

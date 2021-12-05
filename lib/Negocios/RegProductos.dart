@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:todo_aqui/Usuarios/GestionUsuario.dart';
+
+import '../Home.dart';
+import 'RegistroNegocio.dart';
+import 'ShopList.dart';
 
 class RegistroProducto extends StatefulWidget {
   final String TiendaId;
@@ -41,6 +46,7 @@ class RegistroProductoApp extends State<RegistroProducto> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.orange[50],
       appBar: AppBar(
