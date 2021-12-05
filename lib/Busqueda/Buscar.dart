@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_aqui/Negocios/ObjetoTienda.dart';
 import 'package:todo_aqui/Negocios/ShopOne.dart';
 
 import 'package:todo_aqui/Negocios/negocio.dart';
@@ -22,6 +23,36 @@ class SearchApp extends State<Search>{
 
   @override
   Widget build(BuildContext context){
+    ObjetoTienda objTienda=new ObjetoTienda();
+
+    buscarDoc(String docId) async {
+      try {
+        CollectionReference ref =
+        FirebaseFirestore.instance.collection("Negocios");
+        QuerySnapshot tienda = await ref.get();
+
+        if (tienda.docs.length != 0) {
+          for (var cursor in tienda.docs) {
+            if (cursor.id == docId) {
+              objTienda.nombre=cursor.get("Nombre");
+              objTienda.des_corta=cursor.get("Tipo");
+              objTienda.des_larga=cursor.get("Servicio");
+              objTienda.telefono=cursor.get("Telefono");
+              objTienda.website=cursor.get("Web");
+              objTienda.imagen=cursor.get("Imagen");
+              objTienda.idTienda=cursor.id;
+              objTienda.prodserv=cursor.get("ProductoServicio");
+              //this.logo = cursor.get("rutaFoto");
+              //this.titulo = cursor.get("Nombre");
+
+              //print(widget.docId + " id importado");
+            }
+          }
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
 
     return Scaffold(
       backgroundColor: Colors.orange[50],
@@ -82,13 +113,14 @@ class SearchApp extends State<Search>{
                                 width: 70,
                                 height: 70,
                                 child: Image.asset(
-                                  "image/logo.png" ,),
+                                  "image/" + snapshot.data!.docs[index]
+                                  .get("Imagen"),),
                               ),
                               ElevatedButton(
                                   onPressed: () {
                                     this.idDoc=snapshot.data!.docs[index].id;
-                                    //Navigator.push(context, MaterialPageRoute(builder: (_) => ShopOne(this.idDoc)));
-
+                                    buscarDoc(this.idDoc);
+                                    Navigator.push(context, MaterialPageRoute(builder: (_) => ShopOne(objTienda)));
                                   }, child: Text("Entrar"), style: ElevatedButton.styleFrom(
                                 primary: Colors.teal,
                               ),)

@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:todo_aqui/Negocios/ShopList2.dart';
 import 'package:todo_aqui/Usuarios/Login.dart';
 import 'package:todo_aqui/Usuarios/ModificarUser.dart';
 import 'RegistroUsuario.dart';
@@ -111,7 +112,7 @@ class GestionUsuarioApp extends State<GestionUsuario>{
                 onPressed: () {
                   print('Presione el boton');
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => ShopList()));
+                      MaterialPageRoute(builder: (_) => ShopList2()));
                 },
               )),
           Padding(

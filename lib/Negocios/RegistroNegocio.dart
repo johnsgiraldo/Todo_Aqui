@@ -6,6 +6,8 @@ import 'package:todo_aqui/Negocios/ShopList.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:todo_aqui/Usuarios/GestionUsuario.dart';
 
+import 'ShopList2.dart';
+
 
 
 class Registro extends StatelessWidget {
@@ -71,8 +73,6 @@ class RegistroNegocioApp extends State<RegistroNegocio> {
                 icon: const Icon(Icons.home),
                 color: Colors.teal,
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => Home()));
                   print('Presione el boton');
                 },
               )),
@@ -95,7 +95,7 @@ class RegistroNegocioApp extends State<RegistroNegocio> {
                 onPressed: () {
                   print('Presione el boton');
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => ShopList()));
+                      MaterialPageRoute(builder: (_) => ShopList2()));
                 },
               )),
           Padding(
