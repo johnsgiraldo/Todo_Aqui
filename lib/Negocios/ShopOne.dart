@@ -24,9 +24,9 @@ class ShopOneApp extends State<ShopOne> {
   //int cont = 0;
   //String NombreP="";
   //String PrecioP="";
-  //ShopOneApp() {
+  ShopOneApp() {
     //buscarDoc();
- // }
+    }
 
   buscarDoc() async {
     try {
@@ -181,18 +181,30 @@ class ShopOneApp extends State<ShopOne> {
                       },
                       //child: const Icon(Icons.add_box),
                       child: Text("add"),
+                      heroTag: null,
                       tooltip: "Agregar producto",
                     ),
                     FloatingActionButton(
                       backgroundColor: Colors.teal,
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) =>
-                                    Carrito()));
+                      onPressed: () async{
+                        Token tk=new Token();
+                        String idUser=await tk.validarToken("");
+                        print(idUser);
+                        if(idUser != ""){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) =>
+                                      CarritoCompras(idUser)));
+
+                        }else{
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (_) => Login()));
+                        }
+
                       },
                       child: const Icon(Icons.shopping_cart),
+                      heroTag: null,
                       //child: Text("add"),
                       //tooltip: "Agregar producto",
                     )
@@ -295,6 +307,7 @@ class ShopOneApp extends State<ShopOne> {
                                         },
                                         //child: const Icon(Icons.add_shopping_cart),
                                         child: Text("Ver"),
+                                        heroTag: null,
                                         tooltip: "Agregar al carrito",
                                         backgroundColor: Colors.teal,
                                       )

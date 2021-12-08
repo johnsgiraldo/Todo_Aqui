@@ -1,22 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class Carrito extends StatelessWidget {
+class CarritoCompras extends StatefulWidget{
+  final String idUser;
+  CarritoCompras(this.idUser);
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: Carrito2());
-  }
+  CarritoComprasApp createState() => CarritoComprasApp();
 }
 
-class Carrito2 extends StatefulWidget {
-  @override
-  Carrito2App createState() => Carrito2App();
-}
-
-class Carrito2App extends State<Carrito2> {
-  @override
-  String idDoc="";
+class CarritoComprasApp extends State<CarritoCompras>{
   TextEditingController cant=TextEditingController();
+
   final firebase=FirebaseFirestore.instance;
 
   borrarDocumento(String idItem) async{
@@ -45,6 +39,7 @@ class Carrito2App extends State<Carrito2> {
               return ListView.builder(
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (BuildContext context, int index){
+                  if(snapshot.data!.docs[index].get("UsuarioId")==widget.idUser){
                   return new Card(
                     child: Column(
                       children: [
@@ -111,7 +106,7 @@ class Carrito2App extends State<Carrito2> {
                                 },
                                 child: const Icon(Icons.remove),
                                 //child: Text("Ver"),
-                                tooltip: "Agregar al carrito",
+                                tooltip: "Borrar del carrito",
                                 heroTag: null,
                                 backgroundColor: Colors.teal,
                               )
@@ -122,14 +117,19 @@ class Carrito2App extends State<Carrito2> {
                       ],
                     ),
                   );
-                },
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  }
+
+            }else{
+                  return new Card();
+              }
+
+            });
+  },
+  ),
+  ),
+  ),
+
+  );
+}
 
   void mensaje(String titulo,String mess, String idItem){
     showDialog(context: context, builder: (builcontex){
