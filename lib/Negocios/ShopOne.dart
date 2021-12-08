@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:todo_aqui/Negocios/ObjetoTienda.dart';
 import 'package:todo_aqui/Usuarios/Login.dart';
 import 'package:todo_aqui/Usuarios/Token.dart';
-import '../Carrito.dart';
+import '../Carrito/Carrito.dart';
 import 'Productos.dart';
 import 'RegProductos.dart';
+import 'package:todo_aqui/Carrito/ObjetoCarrito.dart';
 
 class ShopOne extends StatefulWidget {
   final ObjetoTienda tiendaObj;
@@ -50,16 +51,17 @@ class ShopOneApp extends State<ShopOne> {
   }
 
   //agregarCarrito(NombreP, PrecioP) async {
-  agregarCarrito(String idTienda,String idUser, String idItem, String nombre, String precio,String imagen) async {
+  agregarCarrito(String nomTienda,String idUser, String idItem, String nombre, String precio,String imagen, String Descripcion) async {
 
     try {
       await firebase.collection("Carrito").doc().set({
         "UsuarioId":idUser,
-        "TiendaId":idTienda,
+        "TiendaId": nomTienda,
         "ProductoId": idItem,
         "NombreProd": nombre,
         "PrecioProd": precio,
         "ImagenProd": imagen,
+        "DescripcionProd": Descripcion,
         //"Precio": PrecioP,
         //"Nombre": NombreP,
       });
@@ -128,12 +130,6 @@ class ShopOneApp extends State<ShopOne> {
       padding: const EdgeInsets.all(32),
       child: Text(
         widget.tiendaObj.prodserv,
-        /*'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese '
-            'Alps. Situated 1,578 meters above sea level, it is one of the '
-            'larger Alpine Lakes. A gondola ride from Kandersteg, followed by a '
-            'half-hour walk through pastures and pine forest, leads you to the '
-            'lake, which warms to 20 degrees Celsius in the summer. Activities '
-            'enjoyed here include rowing, and riding the summer toboggan run.',*/
         softWrap: true,
       ),
     );
@@ -269,32 +265,33 @@ class ShopOneApp extends State<ShopOne> {
                                         ),
                                       ),
                                       FloatingActionButton(
-                                        onPressed: () {
-                                          String NombreP=snapshot.data!.docs[index].get("Nombre");
-                                          String PrecioP=snapshot.data!.docs[index].get("Precio");
-                                          //agregarCarrito(NombreP, PrecioP);
+                                        onPressed: () async{
+                                          Token tk=new Token();
+                                          String idUser=await tk.validarToken("");
+                                          print(idUser);
+                                          ObjCarrito cart=new ObjCarrito();
+                                          cart.descripcionItem=snapshot.data!.docs[index].get("Descripcion");
+                                          cart.nombreItem=snapshot.data!.docs[index].get("Nombre");
+                                          cart.precioItem=snapshot.data!.docs[index].get("Precio");
+                                          cart.imagenItem=snapshot.data!.docs[index].get("imagen");
+                                          cart.nombreTienda=widget.tiendaObj.nombre;
+                                          cart.idUser=idUser;
+                                          cart.idItem=snapshot.data!.docs[index].id;
+                                          if(idUser != ""){
+                                            agregarCarrito(cart.nombreTienda, cart.idUser,cart.idItem, cart.nombreItem, cart.precioItem, cart.imagenItem, cart.descripcionItem );
+                                          }else{
+                                            Navigator.push(context,
+                                                MaterialPageRoute(builder: (_) => Login()));
+                                          }
                                         },
                                         child:
                                         const Icon(Icons.add_shopping_cart),
+                                        heroTag: null,
                                         tooltip: "Agregar al carrito",
                                         backgroundColor: Colors.teal,
                                       ),
                                       FloatingActionButton(
                                         onPressed: () async{
-                                          Token tk=new Token();
-                                          String idUser=await tk.validarToken();
-                                          print(idUser);
-                                          if(idUser != ""){
-                                            String NombreP=snapshot.data!.docs[index].get("Nombre");
-                                            String PrecioP=snapshot.data!.docs[index].get("Precio");
-                                            String ImagenP=snapshot.data!.docs[index].get("imagen");
-                                            agregarCarrito(widget.tiendaObj.idTienda, idUser,snapshot.data!.docs[index].id, NombreP, PrecioP, ImagenP);
-                                          }else{
-                                            Navigator.push(context,
-                                                MaterialPageRoute(builder: (_) => Login()));
-                                          }
-                                          //this.idDoc=snapshot.data!.docs[index].id;
-                                          //Navigator.push(context, MaterialPageRoute(builder: (_) => Productos(this.idDoc)));
                                         },
                                         //child: const Icon(Icons.add_shopping_cart),
                                         child: Text("Ver"),

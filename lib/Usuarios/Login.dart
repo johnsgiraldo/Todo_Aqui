@@ -33,9 +33,18 @@ class LoginApp extends State<Login>{
               print("Usuario encontrado");
               flag=1;
               Token tk=new Token();
+              String idToken= await tk.validarToken("Login");
+              if (idToken!=""){
+                final firebase=FirebaseFirestore.instance;
+                try{
+                  firebase.collection("Tokens").doc(idToken).delete();
+                }catch(e){
+                  print(e);
+                }
+              }
               tk.guardarToken(cursor.id);
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => Home()));
+              Navigator.of(context).pop();
+              // Navigator.push(context,MaterialPageRoute(builder: (_) => busqueda()));
             }
           }
         }
@@ -129,11 +138,11 @@ class LoginApp extends State<Login>{
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(padding: EdgeInsets.all(1),
+            Padding(padding: EdgeInsets.all(20),
             child: Center(
               child: Container(
-                width: 300,
-                height: 300,
+                width: 100,
+                height: 100,
                 child: Image.asset('image/logo.png'),
               ),
             ),
@@ -168,7 +177,7 @@ class LoginApp extends State<Login>{
                 child: ElevatedButton(
                   onPressed: () {
                     validarDatos();
-                    print('Presione el boton');
+                    //print('Presione el boton');
                   },
                   child: Text('Entrar'),
                   style: ElevatedButton.styleFrom(
