@@ -185,7 +185,7 @@ class LoginApp extends State<Login>{
                   ),
                 )),
             Padding(
-                padding: EdgeInsets.only(bottom: 100),
+                padding: EdgeInsets.only(bottom: 260),
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(context,
