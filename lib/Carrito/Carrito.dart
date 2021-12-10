@@ -197,7 +197,7 @@ class CarritoComprasApp extends State<CarritoCompras>{
                   controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
                 ),
                 CheckboxListTile(
-                  title: Text("¿Desea entrega a domiciolio"),
+                  title: Text("¿Desea entrega a domicilio?"),
                   //checkColor: Colors.teal,
                   activeColor: Colors.teal,
                   value: valor2,
