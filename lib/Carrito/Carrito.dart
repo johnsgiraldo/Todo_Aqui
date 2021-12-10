@@ -12,6 +12,12 @@ class CarritoComprasApp extends State<CarritoCompras>{
   TextEditingController cant=TextEditingController();
 
   final firebase=FirebaseFirestore.instance;
+  var costototal=0;
+  var precio=0;
+  bool? valor = false;
+  bool? valor2 = false;
+  TextEditingController cost = TextEditingController();
+
 
   borrarDocumento(String idItem) async{
     try{
@@ -30,103 +36,192 @@ class CarritoComprasApp extends State<CarritoCompras>{
         title: Text("Carrito de Compras"),
         backgroundColor: Colors.teal[100],
       ),
-      body: Container(
-        child: Center(
-          child: StreamBuilder(
-            stream: FirebaseFirestore.instance.collection("Carrito").snapshots(),
-            builder: (BuildContext context,AsyncSnapshot<QuerySnapshot> snapshot){
-              if(!snapshot.hasData) return CircularProgressIndicator();
-              return ListView.builder(
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: (BuildContext context, int index){
-                  if(snapshot.data!.docs[index].get("UsuarioId")==widget.idUser){
-                  return new Card(
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(15),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                /*1*/
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    /*2*/
-                                    Container(
-                                      padding: const EdgeInsets.only(bottom: 8),
-                                      child: Text(
-                                        snapshot.data!.docs[index].get("NombreProd"),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
+      body: Column(
+        children: [
+          Expanded(
+            child: Center(
+              child: StreamBuilder(
+                stream: FirebaseFirestore.instance.collection("Carrito").snapshots(),
+                builder: (BuildContext context,AsyncSnapshot<QuerySnapshot> snapshot){
+                  if(!snapshot.hasData) return CircularProgressIndicator();
+                  return ListView.builder(
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (BuildContext context, int index){
+                        if(snapshot.data!.docs[index].get("UsuarioId")==widget.idUser){
+                          precio=int.parse(snapshot.data!.docs[index].get("PrecioProd"));
+                          print(precio);
+                          costototal=costototal+precio;
+                          print(costototal);
+                          return new Card(
+                            child: Column(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(15),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        /*1*/
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            /*2*/
+                                            Container(
+                                              padding: const EdgeInsets.only(bottom: 8),
+                                              child: Text(
+                                                snapshot.data!.docs[index].get("NombreProd"),
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                              padding: const EdgeInsets.only(bottom: 8),
+                                              child: Text(
+                                                snapshot.data!.docs[index].get("DescripcionProd"),
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              //'Compras en tienda',
+                                              '\u{1F4B2}'+snapshot.data!.docs[index].get("PrecioProd"),
+                                              style: TextStyle(
+                                                color: Colors.grey[500],
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.only(bottom: 8),
-                                      child: Text(
-                                        snapshot.data!.docs[index].get("DescripcionProd"),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                    ),
-                                    Text(
-                                      //'Compras en tienda',
-                                      snapshot.data!.docs[index].get("PrecioProd"),
-                                      style: TextStyle(
-                                        color: Colors.grey[500],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              /*3*/
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: Image.asset(
-                                  "image/" +
-                                      snapshot.data!.docs[index]
-                                          .get("ImagenProd"),
-                                ),
-                                padding: const EdgeInsets.only(right: 8),
-                              ),
-                              Container(
-                                width: 70,
-                                height: 70,
-                                child: TextField(
-                                  //controller: cant,
-                                ),
-                                padding: const EdgeInsets.only(right: 8),
-                              ),
-                              FloatingActionButton(
-                                onPressed: () async{
-                                  mensaje("Borrado", "¿Desea borrar el articulo?", snapshot.data!.docs[index].id);
-                                },
-                                child: const Icon(Icons.remove),
-                                //child: Text("Ver"),
-                                tooltip: "Borrar del carrito",
-                                heroTag: null,
-                                backgroundColor: Colors.teal,
-                              )
-                            ],
-                          ),
-                        )
 
-                      ],
+                                      /*3*/
+                                      Container(
+                                        width: 70,
+                                        height: 70,
+                                        child: Image.asset(
+                                          "image/" +
+                                              snapshot.data!.docs[index]
+                                                  .get("ImagenProd"),
+                                        ),
+                                        padding: const EdgeInsets.only(right: 8),
+                                      ),
+                                      /*Container(
+                                        width: 70,
+                                        height: 70,
+                                        child: TextField(
+                                          //controller: cant,
+                                        ),
+                                        padding: const EdgeInsets.only(right: 8),
+                                      ),*/
+                                      FloatingActionButton(
+                                        onPressed: () async{
+                                          mensaje("Borrado", "¿Desea borrar el articulo?", snapshot.data!.docs[index].id);
+                                          costototal=costototal-precio;
+                                        },
+                                        child: const Icon(Icons.remove),
+                                        //child: Text("Ver"),
+                                        tooltip: "Borrar del carrito",
+                                        heroTag: null,
+                                        backgroundColor: Colors.teal,
+                                      )
+                                    ],
+                                  ),
+                                )
+
+                              ],
+                            ),
+
+                          );
+
+                        }else{
+                          return new Card();
+                        }
+
+                      });
+                },
+              ),
+            ),),
+          Center(
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    "Total a pagar: ",
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.blueGrey),
+                  ),
+                ),
+
+              ],
+            ),
+          ),
+          Expanded(
+            /*1*/
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /*2*/
+                Container(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    "Precio total:"+'\u{1F4B2}'+costototal.toString(),
+                    style: TextStyle(
+                      fontSize:20, fontWeight: FontWeight.bold,
                     ),
-                  );
+                  ),
+                ),
+                Text(
+                  "Recuerda validar los productos antes de proceder con tu pago",
+                  style: TextStyle( fontSize:15,
+                    color: Colors.grey[500],
+                  ),
+                ),
+                /*Checkbox(
+                  value: this.valor,
+                  onChanged: (valor) {
+                    setState(() {
+                      this.valor = valor;
+                    });
+                  },
+                ),*/
+                CheckboxListTile(
+                  title: Text("¿Desea recoger en tienda?"),
+                  //checkColor: Colors.teal,
+                  activeColor: Colors.teal,
+                  value: valor,
+                  onChanged: (newValue) {
+                    setState(() {
+                      valor = newValue;
+                    });
+                  },
+                  controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+                ),
+                CheckboxListTile(
+                  title: Text("¿Desea entrega a domiciolio"),
+                  //checkColor: Colors.teal,
+                  activeColor: Colors.teal,
+                  value: valor2,
+                  onChanged: (newValue) {
+                    setState(() {
+                      valor2 = newValue;
+                    });
+                  },
+                  controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+                ),
+                Center(
+                    child: ElevatedButton(onPressed: (){
 
-            }else{
-                  return new Card();
-              }
+                    }, child: Text("Pagar"), style: ElevatedButton.styleFrom(
+                      primary: Colors.teal,
+                    ),)
+                ),
 
-            });
-  },
-  ),
-  ),
-  ),
+              ],
+            ),
+          ),
+        ],
+
+  ),//Body
 
   );
 }
