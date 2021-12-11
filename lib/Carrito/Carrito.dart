@@ -82,7 +82,9 @@ class CarritoComprasApp extends State<CarritoCompras>{
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (BuildContext context, int index){
                         if(snapshot.data!.docs[index].get("UsuarioId")==widget.idUser){
-                          precio=int.parse(snapshot.data!.docs[index].get("PrecioProd"));
+                          //TextEditingController cant = TextEditingController();
+                          //cant.text=snapshot.data!.docs[index].get("Cantidad").toString();
+                          precio=(snapshot.data!.docs[index].get("Total"));
                           //print(precio);
                           costototal=costototal+precio;
                           //print(costototal);
@@ -119,7 +121,14 @@ class CarritoComprasApp extends State<CarritoCompras>{
                                             ),
                                             Text(
                                               //'Compras en tienda',
-                                              '\u{1F4B2}'+snapshot.data!.docs[index].get("PrecioProd"),
+                                              'Costo uni:'+'\u{1F4B2}'+snapshot.data!.docs[index].get("PrecioProd"),
+                                              style: TextStyle(
+                                                color: Colors.grey[500],
+                                              ),
+                                            ),
+                                            Text(
+                                              //'Compras en tienda',
+                                              'SubTotal:'+'\u{1F4B2}'+snapshot.data!.docs[index].get("Total").toString(),
                                               style: TextStyle(
                                                 color: Colors.grey[500],
                                               ),
@@ -139,14 +148,16 @@ class CarritoComprasApp extends State<CarritoCompras>{
                                         ),
                                         padding: const EdgeInsets.only(right: 8),
                                       ),
-                                      /*Container(
-                                        width: 70,
-                                        height: 70,
-                                        child: TextField(
-                                          //controller: cant,
-                                        ),
-                                        padding: const EdgeInsets.only(right: 8),
-                                      ),*/
+                                      Container(
+                                        padding: const EdgeInsets.only(bottom: 0, left: 10, right: 10),
+                                          //width: 70,
+                                          //height: 70,
+                                          child: Text(
+                                              //'Compras en tienda',
+                                              'Cant: '+snapshot.data!.docs[index].get("Cantidad").toString(),
+                                              style: TextStyle(
+                                              color: Colors.grey[500],
+                                              ),),),
                                       FloatingActionButton(
                                         onPressed: () async{
                                           mensaje("Borrado", "¿Desea borrar el articulo?", snapshot.data!.docs[index].id);

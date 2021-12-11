@@ -51,22 +51,20 @@ class ShopOneApp extends State<ShopOne> {
     }
   }
 
-  //agregarCarrito(NombreP, PrecioP) async {
-  agregarCarrito(String nomTienda,String idUser, String idItem, String nombre, String precio,String imagen, String Descripcion) async {
-
+  agregarCarrito(ObjCarrito cartShopping) async {
     try {
       await firebase.collection("Carrito").doc().set({
-        "UsuarioId":idUser,
-        "TiendaId": nomTienda,
-        "ProductoId": idItem,
-        "NombreProd": nombre,
-        "PrecioProd": precio,
-        "ImagenProd": imagen,
-        "DescripcionProd": Descripcion,
-        //"Precio": PrecioP,
-        //"Nombre": NombreP,
+        "UsuarioId": cartShopping.idUser,
+        "NombreTienda": cartShopping.nombreTienda,
+        "ProductoId": cartShopping.idItem,
+        "PrecioProd": cartShopping.precioItem,
+        "NombreProd": cartShopping.nombreItem,
+        "DescripcionProd": cartShopping.descripcionItem,
+        "Cantidad":cartShopping.cantidad,
+        "Total":cartShopping.total,
+        "ImagenProd":cartShopping.imagenItem,
       });
-      // mensaje1("Correcto","Registro correto");
+      //mensaje("Correcto","Registro correto");
     } catch (e) {
       print(e);
       // mensaje("Error...",""+e.toString());
@@ -291,7 +289,12 @@ class ShopOneApp extends State<ShopOne> {
                                           cart.idUser=idUser;
                                           cart.idItem=snapshot.data!.docs[index].id;
                                           if(idUser != ""){
-                                            agregarCarrito(cart.nombreTienda, cart.idUser,cart.idItem, cart.nombreItem, cart.precioItem, cart.imagenItem, cart.descripcionItem );
+                                            mensajeCantidad("Agregar al carrito","¿Desea agregar el artívulo al carrito?",cart);
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        CarritoCompras(idUser)));
                                           }else{
                                             Navigator.push(context,
                                                 MaterialPageRoute(builder: (_) => Login()));
@@ -352,4 +355,56 @@ class ShopOneApp extends State<ShopOne> {
       ],
     );
   }
+
+  void mensajeCantidad(String titulo, String mess, ObjCarrito cart) {
+    TextEditingController cant=TextEditingController();
+
+    cant.text="1" ;
+
+    showDialog(
+        context: context,
+        builder: (builcontex) {
+          return AlertDialog(
+            title: Text(titulo),
+            content: Text(mess),
+            actions: [
+              Padding(
+                padding:
+                EdgeInsets.only(left: 15, top: 15, right: 15, bottom: 0),
+                child: TextField(
+                  controller: cant,
+
+                  decoration: InputDecoration(
+                      labelText: "Cantidad ",
+                      hintText: "Digite Cantidad",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15))),
+                ),
+              ),
+              RaisedButton(
+                onPressed: () {
+                  //Navigator.of(context,rootNavigator: true).pop();// pendiente corregir
+                },
+                child: Text(
+                  "Cancelar",
+                  style: TextStyle(color: Colors.teal),
+                ),
+              ),
+              RaisedButton(
+                onPressed: () async {
+                  cart.cantidad=cant.text;
+                  cart.total=int.parse(cart.cantidad)*int.parse(cart.precioItem);
+                  await  agregarCarrito(cart);
+                  //  Navigator.of(context).pop();
+                },
+                child: Text(
+                  "Aceptar",
+                  style: TextStyle(color: Colors.teal),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
 }
