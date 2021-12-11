@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class CarritoCompras extends StatefulWidget{
+class CarritoCompras2 extends StatefulWidget{
   final String idUser;
-  CarritoCompras(this.idUser);
+  CarritoCompras2(this.idUser);
   @override
-  CarritoComprasApp createState() => CarritoComprasApp();
+  CarritoCompras2App createState() => CarritoCompras2App();
 }
 
-class CarritoComprasApp extends State<CarritoCompras>{
+class CarritoCompras2App extends State<CarritoCompras2>{
   TextEditingController cant=TextEditingController();
 
   final firebase=FirebaseFirestore.instance;

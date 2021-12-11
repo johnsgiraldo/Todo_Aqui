@@ -12,8 +12,11 @@ class CarritoComprasApp extends State<CarritoCompras>{
   TextEditingController cant=TextEditingController();
 
   final firebase=FirebaseFirestore.instance;
+  var flag=0;
   var costototal=0;
   var precio=0;
+  var costototal2=0;
+  var precio2=0;
   bool? valor = false;
   bool? valor2 = false;
   TextEditingController cost = TextEditingController();
@@ -26,6 +29,36 @@ class CarritoComprasApp extends State<CarritoCompras>{
       print(e);
     }
 
+  }
+
+  totalizarCarrito() async{
+    try{
+      CollectionReference ref=FirebaseFirestore.instance.collection("Carrito");
+      QuerySnapshot carrito=await ref.get();
+
+      if(carrito.docs.length !=0){
+        for(var cursor in carrito.docs){
+          if(cursor.get("UsuarioId")==widget.idUser){
+            precio=int.parse(cursor.get("PrecioProd"));
+            print(precio);
+            costototal=costototal+precio;
+            print(costototal);
+            flag=1;
+            //return costototal;
+          }
+
+          }
+        return costototal;
+        }
+        /*if (flag==0){
+          print("Login Usuario NO encontrado");
+
+      }else{
+        print("Collección vacía");
+      }*/
+    }catch(e){
+
+    }
   }
 
 
@@ -44,14 +77,15 @@ class CarritoComprasApp extends State<CarritoCompras>{
                 stream: FirebaseFirestore.instance.collection("Carrito").snapshots(),
                 builder: (BuildContext context,AsyncSnapshot<QuerySnapshot> snapshot){
                   if(!snapshot.hasData) return CircularProgressIndicator();
+                  costototal=0;
                   return ListView.builder(
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (BuildContext context, int index){
                         if(snapshot.data!.docs[index].get("UsuarioId")==widget.idUser){
                           precio=int.parse(snapshot.data!.docs[index].get("PrecioProd"));
-                          print(precio);
+                          //print(precio);
                           costototal=costototal+precio;
-                          print(costototal);
+                          //print(costototal);
                           return new Card(
                             child: Column(
                               children: [
@@ -116,7 +150,7 @@ class CarritoComprasApp extends State<CarritoCompras>{
                                       FloatingActionButton(
                                         onPressed: () async{
                                           mensaje("Borrado", "¿Desea borrar el articulo?", snapshot.data!.docs[index].id);
-                                          costototal=costototal-precio;
+                                          //costototal=costototal-precio;
                                         },
                                         child: const Icon(Icons.remove),
                                         //child: Text("Ver"),
@@ -141,6 +175,12 @@ class CarritoComprasApp extends State<CarritoCompras>{
                 },
               ),
             ),),
+
+          //totalizarCarrito(),
+
+
+
+
           Center(
             child: Row(
               children: [
@@ -155,6 +195,7 @@ class CarritoComprasApp extends State<CarritoCompras>{
               ],
             ),
           ),
+
           Expanded(
             /*1*/
             child: Column(
